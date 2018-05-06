@@ -1,0 +1,7 @@
+*.DS_Store
+config/
+debug/
+*.sublime-project
+*.sublime-workspace
+.sfdx/
+.vscode/

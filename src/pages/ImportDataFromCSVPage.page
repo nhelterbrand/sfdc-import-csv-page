@@ -1,0 +1,45 @@
+<apex:page showHeader="true" standardStylesheets="true" sidebar="true" docType="html-5.0" 
+  title="Import Records From CSV" controller="ImportDataFromCSVCtrl" lightningStyleSheets="true">
+<apex:slds />
+
+<!-- REQUIRED SLDS WRAPPER -->
+<div class="slds-scope">
+
+    <div class="slds-grid">
+        <apex:form >
+        <apex:pageMessages />
+        <apex:pageBlock title="Import Records From CSV">
+            <apex:pageBlockButtons location="top">
+                <apex:selectList value="{!selectedObject}" size="1">
+                    <apex:selectOptions value="{!sObjectOptions}"/>
+                    <apex:actionSupport event="onchange"
+                        action="{!generateFieldSetList}"/>
+                </apex:selectList>
+                <apex:selectList value="{!selectedFieldSet}" size="1">
+                    <apex:selectOptions value="{!fieldSetOptions}"/>
+                </apex:selectList>
+                <apex:commandButton styleClass="slds-button slds-button_brand" value="Read File" action="{!transformCSVFileBodyToRecords}"/>
+                <apex:commandButton styleClass="slds-button slds-button_destructive" value="Clear File" action="{!clearFile}"/>
+                <apex:commandButton styleClass="slds-button slds-button_neutral" value="Download CSV Template" action="{!downloadCSVTemplate}"/>
+                    <!-- <apex:commandButton styleClass="slds-button slds-button_success" rendered="{!workOrders.size > 0}" value="Insert Records" action="{!insertWorkOrders}"/> -->
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1">
+                <!-- <apex:inputFile value="{!CSVFileBody}" accept="csv"/> -->
+                <!-- <apex:outputText value="Number Of Work Orders Read: {! workOrders.size } out of maximum 1,000" /> -->
+            </apex:pageBlockSection>
+            <!-- <apex:pageBlockTable value="{!workOrders}" var="wo">
+                <apex:inlineEditSupport event="onclick" />
+                <apex:repeat value="{!$ObjectType.WorkOrder.FieldSets.Import_Work_Order_Page}" var="field">
+                    <apex:column headerValue="{!field.Label}">
+                        <apex:outputField value="{!wo[field]}"/>
+                    </apex:column>
+                </apex:repeat>
+            </apex:pageBlockTable> -->
+        </apex:pageBlock>
+        </apex:form>
+    </div>
+
+</div>
+<!-- / REQUIRED SLDS WRAPPER -->
+
+</apex:page>
