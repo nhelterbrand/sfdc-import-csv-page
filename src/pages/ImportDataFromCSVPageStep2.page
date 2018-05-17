@@ -8,8 +8,10 @@
             <apex:commandButton value="Back" action="{!step1}"/>
             <apex:commandButton styleClass="slds-button slds-button_success" rendered="{!sObjectRecords.size > 0}" value="Insert Records" action="{!insertSObjectRecords}"/>
         </apex:pageBlockButtons>
-        <apex:pageBlockSection title="Choose File To Load">
+        <apex:pageBlockSection title="Choose File To Load" columns="2">
             <apex:inputFile value="{!CSVFileBody}" accept="csv"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection>
             <apex:commandButton styleClass="slds-button slds-button_neutral" value="Download CSV Template" action="{!downloadCSVTemplate}"/>
             <apex:commandButton styleClass="slds-button slds-button_brand" value="Read File" action="{!transformCSVFileBodyToRecords}"/>
             <apex:commandButton styleClass="slds-button slds-button_destructive" value="Clear File" action="{!clearFile}"/>

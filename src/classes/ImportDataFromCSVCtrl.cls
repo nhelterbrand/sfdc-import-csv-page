@@ -7,15 +7,28 @@ public without sharing class ImportDataFromCSVCtrl {
 
     public List<SelectOption> sObjectOptions;
     public List<SelectOption> fieldSetOptions;
-
     public Blob CSVFileBody {get;set;}
-    public String selectedObject {get;set;}
-    public String selectedFieldSet {get;set;}
 
     public class SObjectField {
         public String type;
         public String label {get;set;}
         public String developerName {get;set;}
+    }
+
+    public String selectedObject {
+        get {
+            if (selectedObject == null) selectedObject = 'Account';
+            return selectedObject;
+        }
+        set;
+    }
+
+    public String selectedFieldSet {
+        get {
+            if (selectedFieldSet == null) selectedFieldSet = 'All';
+            return selectedFieldSet;
+        }
+        set;
     }
 
     public List<SObject> sObjectRecords {
@@ -59,22 +72,20 @@ public without sharing class ImportDataFromCSVCtrl {
             for (Schema.FieldSet fs : fieldSetList) {
                 fieldSetOptions.add(new SelectOption(fs.getName(), fs.getLabel()));
             }
-
-            if (fieldSetOptions.size() > 0) {
-                selectedFieldSet = fieldSetOptions[0].getValue();
-            }
         }
     }  
 
     public void fetchSObjectOptions() {
-        List<Schema.SObjectType> gd = Schema.getGlobalDescribe().Values();   
+        List<Schema.SObjectType> gd = Schema.getGlobalDescribe().values();   
         sObjectOptions = new List<SelectOption>();
         
         for(Schema.SObjectType f : gd) {
-            sObjectOptions.add(new SelectOption(f.getDescribe().getName(),f.getDescribe().getLabel()));
-        }
+            Schema.DescribeSObjectResult d = f.getDescribe();
 
-        selectedObject = sObjectOptions[0].getValue();
+            if (d.isCreateable()) {
+                sObjectOptions.add(new SelectOption(f.getDescribe().getName(),f.getDescribe().getLabel()));
+            }
+        }
     }
 
     public void populateFieldSetMemberList() {
@@ -82,6 +93,7 @@ public without sharing class ImportDataFromCSVCtrl {
         System.debug('selected field set: ' + selectedFieldSet);
 
         if (selectedFieldSet != 'All') {
+            fieldSetSObjectFields = new List<SObjectField>();
             List<Schema.FieldSetMember> fieldSetFieldMemberList = Schema.getGlobalDescribe().get(selectedObject).getDescribe().FieldSets.getMap().get(selectedFieldSet).getFields();
 
             for (Schema.FieldSetMember fsm : fieldSetFieldMemberList) {
@@ -93,16 +105,20 @@ public without sharing class ImportDataFromCSVCtrl {
                 fieldSetSObjectFields.add(sf);
             }
         } else {
+            fieldSetSObjectFields = new List<SObjectField>();
             List<Schema.SObjectField> fieldList = Schema.getGlobalDescribe().get(selectedObject).getDescribe().fields.getMap().values();
 
             for (Schema.SObjectField sof : fieldList) {
                 Schema.DescribeFieldResult dfr = sof.getDescribe();
-                SObjectField sf = new SObjectField();
-                sf.label = dfr.getLabel();
-                sf.type = dfr.getType().name();
-                sf.developerName = dfr.getName();
 
-                fieldSetSObjectFields.add(sf);
+                if (dfr.isCreateable()) {
+                    SObjectField sf = new SObjectField();
+                    sf.label = dfr.getLabel();
+                    sf.type = dfr.getType().name();
+                    sf.developerName = dfr.getName();
+
+                    fieldSetSObjectFields.add(sf);
+                }
             }
         }
     }
