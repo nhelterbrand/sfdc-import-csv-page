@@ -1,3 +1,3 @@
-<apex:page contentType="text/csv#ImportWorkOrderTemplate.csv" cache="true">
-<!-- <apex:repeat value="{!$ObjectType.WorkOrder.FieldSets.Import_Work_Order_Page}" var="field">{!field.FieldPath},</apex:repeat> -->
+<apex:page contentType="text/csv#ImportCSVTemplate.csv" cache="true" controller="ImportDataFromCSVCtrl">
+<apex:repeat value="{!fieldSetFieldMemberList}" var="field">{!field.FieldPath},</apex:repeat>
 </apex:page>

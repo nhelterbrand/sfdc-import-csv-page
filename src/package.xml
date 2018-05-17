@@ -7,7 +7,8 @@
 	<types>
 		<members>ImportDataFromCSVPage</members>
 		<members>ImportDataFromCSVPageTemplateExport</members>
+		<members>ImportDataFromCSVPageStep2</members>
 		<name>ApexPage</name>
 	</types>
-	<version>41.0</version>
+	<version>42.0</version>
 </Package>

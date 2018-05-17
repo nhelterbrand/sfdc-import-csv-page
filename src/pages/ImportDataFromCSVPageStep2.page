@@ -1,0 +1,30 @@
+<apex:page title="Import Records From CSV" controller="ImportDataFromCSVCtrl" lightningStyleSheets="true">
+
+<apex:sectionHeader title="Import Records From CSV" subtitle="Step 2 of 2"/>
+<apex:form >
+    <apex:pageMessages />
+    <apex:pageBlock title="Load Records">
+        <apex:pageBlockButtons location="bottom">
+            <apex:commandButton value="Back" action="{!step1}"/>
+            <apex:commandButton styleClass="slds-button slds-button_success" rendered="{!sObjectRecords.size > 0}" value="Insert Records" action="{!insertSObjectRecords}"/>
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection title="Choose File To Load">
+            <apex:inputFile value="{!CSVFileBody}" accept="csv"/>
+            <apex:commandButton styleClass="slds-button slds-button_neutral" value="Download CSV Template" action="{!downloadCSVTemplate}"/>
+            <apex:commandButton styleClass="slds-button slds-button_brand" value="Read File" action="{!transformCSVFileBodyToRecords}"/>
+            <apex:commandButton styleClass="slds-button slds-button_destructive" value="Clear File" action="{!clearFile}"/>
+            <apex:outputText value="Number Of Records Read: {! sObjectRecords.size } out of maximum 1,000"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title="Make Any Necessary Edits Before Inserting Records">
+            <apex:pageBlockTable value="{!sObjectRecords}" var="sor">
+                <apex:inlineEditSupport event="onclick" />
+                <apex:repeat value="{!fieldSetSObjectFields}" var="field">
+                    <apex:column headerValue="{!field.label}">
+                        <apex:outputField value="{!sor[field.developerName]}"/>
+                    </apex:column>
+                </apex:repeat>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

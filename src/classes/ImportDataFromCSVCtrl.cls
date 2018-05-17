@@ -5,47 +5,119 @@
  */
 public without sharing class ImportDataFromCSVCtrl {
 
+    public List<SelectOption> sObjectOptions;
+    public List<SelectOption> fieldSetOptions;
+
     public Blob CSVFileBody {get;set;}
-    public List<SObject> sObjectRecords {get;set;}
-    public List<SelectOption> sObjectOptions {get; set;}
     public String selectedObject {get;set;}
-
     public String selectedFieldSet {get;set;}
-    public List<SelectOption> fieldSetOptions {get;set;}
 
-    public ImportDataFromCSVCtrl() {
-        sObjectRecords = new List<SObject>();
+    public class SObjectField {
+        public String type;
+        public String label {get;set;}
+        public String developerName {get;set;}
+    }
 
+    public List<SObject> sObjectRecords {
+        get {
+            if (sObjectRecords == null) sObjectRecords = new List<SObject>();
+            return sObjectRecords;
+        }
+        set;
+    }
+
+    public List<SObjectField> fieldSetSObjectFields {
+        get {
+            if (fieldSetSObjectFields == null) fieldSetSObjectFields = new List<SObjectField>();
+            return fieldSetSObjectFields;
+        }
+        set;
+    }
+
+    public List<SelectOption> getSObjectOptions() {
+        if (sObjectOptions == null) {
+            fetchSObjectOptions();
+        }
+
+        return sObjectOptions;
+    }
+
+    public List<SelectOption> getFieldSetOptions() {
+        if (fieldSetOptions == null) {
+            fetchFieldSetOptions();
+        }
+
+        return fieldSetOptions;
+    }
+
+    public void fetchFieldSetOptions() {
+        if (selectedObject != null) {
+            List<Schema.FieldSet> fieldSetList = Schema.getGlobalDescribe().get(selectedObject).getDescribe().FieldSets.getMap().values();
+            fieldSetOptions = new List<SelectOption>();
+            fieldSetOptions.add(new SelectOption('All', 'All Fields')); 
+
+            for (Schema.FieldSet fs : fieldSetList) {
+                fieldSetOptions.add(new SelectOption(fs.getName(), fs.getLabel()));
+            }
+
+            if (fieldSetOptions.size() > 0) {
+                selectedFieldSet = fieldSetOptions[0].getValue();
+            }
+        }
+    }  
+
+    public void fetchSObjectOptions() {
         List<Schema.SObjectType> gd = Schema.getGlobalDescribe().Values();   
         sObjectOptions = new List<SelectOption>();
         
-        for(Schema.SObjectType f : gd)
-        {
-            sObjectOptions.add(new SelectOption(f.getDescribe().getLabel(),f.getDescribe().getLabel()));
+        for(Schema.SObjectType f : gd) {
+            sObjectOptions.add(new SelectOption(f.getDescribe().getName(),f.getDescribe().getLabel()));
+        }
+
+        selectedObject = sObjectOptions[0].getValue();
+    }
+
+    public void populateFieldSetMemberList() {
+        System.debug('selectedObject ' + selectedObject);
+        System.debug('selected field set: ' + selectedFieldSet);
+
+        if (selectedFieldSet != 'All') {
+            List<Schema.FieldSetMember> fieldSetFieldMemberList = Schema.getGlobalDescribe().get(selectedObject).getDescribe().FieldSets.getMap().get(selectedFieldSet).getFields();
+
+            for (Schema.FieldSetMember fsm : fieldSetFieldMemberList) {
+                SObjectField sf = new SObjectField();
+                sf.label = fsm.getLabel();
+                sf.type = fsm.getType().name();
+                sf.developerName = fsm.getFieldPath();
+
+                fieldSetSObjectFields.add(sf);
+            }
+        } else {
+            List<Schema.SObjectField> fieldList = Schema.getGlobalDescribe().get(selectedObject).getDescribe().fields.getMap().values();
+
+            for (Schema.SObjectField sof : fieldList) {
+                Schema.DescribeFieldResult dfr = sof.getDescribe();
+                SObjectField sf = new SObjectField();
+                sf.label = dfr.getLabel();
+                sf.type = dfr.getType().name();
+                sf.developerName = dfr.getName();
+
+                fieldSetSObjectFields.add(sf);
+            }
         }
     }
 
-    public void generateFieldSetList() {
-        Map<String, Schema.SObjectType> schemaMap = Schema.getGlobalDescribe();
-        List<Schema.FieldSet> fieldSetList = schemaMap.get(selectedObject).getDescribe().fieldsets.getMap().values();
-        fieldSetOptions = new List<SelectOption>(); 
-
-        for (Schema.FieldSet fs : fieldSetList) {
-            fieldSetOptions.add(new SelectOption(fs.getLabel(), fs.getLabel()));
-        }
-    }
-
-    public Object putValue(Schema.DisplayType type, Object value) {
+    public Object putValue(String type, Object value) {
         if (value != '') {
-            if (type == Schema.DisplayType.Datetime) {
+            if (type == 'Datetime') {
                 return Date.parse((String)value);
-            } else if (type == Schema.DisplayType.Date) {
+            } else if (type == 'Date') {
                 return Date.parse((String)value);
-            } else if (type == Schema.DisplayType.Integer) {
+            } else if (type == 'Integer') {
                 return Integer.valueOf((String)value);
-            } else if (type == Schema.DisplayType.Double) {
+            } else if (type == 'Double') {
                 return Decimal.valueOf((String)value);
-            } else if (type == Schema.DisplayType.Currency) {
+            } else if (type == 'Currency') {
                 return Decimal.valueOf((String)value);
             } else {
                 return value;
@@ -60,21 +132,20 @@ public without sharing class ImportDataFromCSVCtrl {
 
             String CSVString = CSVFileBody.toString();
             List<List<String>> parsedCSV = parseCSV(CSVString, true);
-            // List<Schema.FieldSetMember> importWorkOrderFieldSet = SObjectType.WorkOrder.FieldSets.Import_Work_Order_Page.getFields();
 
-            // for (Integer i = 0; i < parsedCSV.size(); i++) {
-            //     WorkOrder wo = new WorkOrder();
-            //     System.debug('parsedCSV[' + i + ']' + parsedCSV[i]);
+            for (Integer i = 0; i < parsedCSV.size(); i++) {
+                SObject sr = Schema.getGlobalDescribe().get(selectedObject).newSObject();
+                System.debug('parsedCSV[' + i + ']' + parsedCSV[i]);
 
-            //     for (Integer j = 0; j < importWorkOrderFieldSet.size(); j++) {
-            //         Schema.FieldSetMember field = importWorkOrderFieldSet[j];
-            //         System.debug('fieldset field: ' + field);
-            //         System.debug('value used: ' + putValue(field.getType(), parsedCSV[i][j]));
-            //         wo.put(field.getFieldPath(), putValue(field.getType(), parsedCSV[i][j]));
-            //     }
+                for (Integer j = 0; j < fieldSetSObjectFields.size(); j++) {
+                    SObjectField field = fieldSetSObjectFields[j];
+                    System.debug('fieldset field: ' + field);
+                    System.debug('value used: ' + putValue(field.type, parsedCSV[i][j]));
+                    sr.put(field.developerName, putValue(field.type, parsedCSV[i][j]));
+                }
 
-            //     workOrders.add(wo);
-            // }
+                sObjectRecords.add(sr);
+            }
 
         } catch (Exception e) {
             ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.Severity.ERROR, e.getMessage());
@@ -83,20 +154,20 @@ public without sharing class ImportDataFromCSVCtrl {
         }
     }
 
-    // public void insertWorkOrders() {
-    //     try {
-    //         insert workOrders;
-    //         ApexPages.Message successMessage = new ApexPages.Message(ApexPages.Severity.CONFIRM, ' Inserted ' + workOrders.size() + ' Work Orders!');
-    //         ApexPages.addMessage(successMessage);
+    public void insertSObjectRecords() {
+        try {
+            insert sObjectRecords;
+            ApexPages.Message successMessage = new ApexPages.Message(ApexPages.Severity.CONFIRM, ' Inserted ' + sObjectRecords.size() + ' ' + selectedObject + ' records!');
+            ApexPages.addMessage(successMessage);
 
-    //         CSVFileBody = null;
-    //         workOrders = new List<WorkOrder>();            
-    //     } catch (Exception e) {
-    //         ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.Severity.ERROR, e.getMessage());
-    //         System.debug(LoggingLevel.ERROR, e.getMessage());
-    //         ApexPages.addMessage(errorMessage);
-    //     }
-    // }
+            CSVFileBody = null;
+            sObjectRecords = new List<SObject>();            
+        } catch (Exception e) {
+            ApexPages.Message errorMessage = new ApexPages.Message(ApexPages.Severity.ERROR, e.getMessage());
+            System.debug(LoggingLevel.ERROR, e.getMessage());
+            ApexPages.addMessage(errorMessage);
+        }
+    }
 
     public void clearFile() {
         sObjectRecords = new List<SObject>();
@@ -105,6 +176,15 @@ public without sharing class ImportDataFromCSVCtrl {
 
     public PageReference downloadCSVTemplate() {
         return Page.ImportDataFromCSVPageTemplateExport; 
+    }
+
+    public PageReference step2() {
+        populateFieldSetMemberList();
+        return Page.ImportDataFromCSVPageStep2;
+    }
+
+    public PageReference step1() {
+        return Page.ImportDataFromCSVPage;
     }
 
     // initial credit from https://developer.salesforce.com/page/Code_Samples#Parse_a_CSV_with_APEX
