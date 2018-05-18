@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>All_Fields_Text</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>All Fields Text</shortDescription>
+        <value>All Fields</value>
+    </labels>
+    <labels>
+        <fullName>Allow_Partial_Success_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Allow Partial Success Label</shortDescription>
+        <value>Allow Partial Success</value>
+    </labels>
+    <labels>
+        <fullName>Back</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Back</shortDescription>
+        <value>Back</value>
+    </labels>
+    <labels>
+        <fullName>Choose_File_Message</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Choose File Message</shortDescription>
+        <value>Please Choose a File To Load First</value>
+    </labels>
+    <labels>
+        <fullName>Choose_File_To_Load_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Choose File To Load Label</shortDescription>
+        <value>Choose File To Load (Maximum 1,000 Records)</value>
+    </labels>
+    <labels>
+        <fullName>Clear_File_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Clear File Label</shortDescription>
+        <value>Clear File</value>
+    </labels>
+    <labels>
+        <fullName>Configurations_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Configurations Label</shortDescription>
+        <value>Configurations</value>
+    </labels>
+    <labels>
+        <fullName>Download_CSV_Template_Button_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Download CSV Template Button Label</shortDescription>
+        <value>Download CSV Template</value>
+    </labels>
+    <labels>
+        <fullName>Error_Insert_Message</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Insert Message</shortDescription>
+        <value>Could not Insert {0} records. Please fix remaining records in the table below</value>
+    </labels>
+    <labels>
+        <fullName>Insert_Records_Button_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Insert Records Button Label</shortDescription>
+        <value>Insert Records</value>
+    </labels>
+    <labels>
+        <fullName>Load_Records_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Load Records Label</shortDescription>
+        <value>Load Records</value>
+    </labels>
+    <labels>
+        <fullName>Mixed_Result_Insert_Message</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Mixed Result Insert Message</shortDescription>
+        <value>Inserted {0} {1} records, but could not Insert {2} records. Please fix remaining records in the table below</value>
+    </labels>
+    <labels>
+        <fullName>Next</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Next</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>Records_Table_Title_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Records Table Title Label</shortDescription>
+        <value>Make Any Necessary Edits Before Inserting Records</value>
+    </labels>
+    <labels>
+        <fullName>Select_Field_Set_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Select Field Set Label</shortDescription>
+        <value>Select Field Set on Object</value>
+    </labels>
+    <labels>
+        <fullName>Select_Object_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Select Object Label</shortDescription>
+        <value>Select Object</value>
+    </labels>
+    <labels>
+        <fullName>Select_Object_and_Field_Set_Step_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Select Object and Field Set Step Label</shortDescription>
+        <value>Select Object and Field Set</value>
+    </labels>
+    <labels>
+        <fullName>Step_1_of_2_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Step 1 of 2 Label</shortDescription>
+        <value>Step 1 of 2</value>
+    </labels>
+    <labels>
+        <fullName>Step_2_of_2_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Step 2 of 2 Label</shortDescription>
+        <value>Step 2 of 2</value>
+    </labels>
+    <labels>
+        <fullName>Success_Insert_Message</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Success Insert Message</shortDescription>
+        <value>Inserted {0} {1} records!</value>
+    </labels>
+    <labels>
+        <fullName>Title_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Title Label</shortDescription>
+        <value>Import Records From CSV</value>
+    </labels>
+</CustomLabels>

@@ -25,7 +25,7 @@
                         <apex:outputField value="{!sor.record[field.developerName]}"/>
                     </apex:column>
                 </apex:repeat>
-                <apex:column>
+                <apex:column >
                     <apex:repeat value="{!sor.errorMessages}" var="message">
                         <apex:outputText value="{!message}"/>
                     </apex:repeat>
