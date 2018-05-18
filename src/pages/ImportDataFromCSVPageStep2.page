@@ -1,30 +1,35 @@
-<apex:page title="Import Records From CSV" controller="ImportDataFromCSVCtrl" lightningStyleSheets="true">
+<apex:page title="{!$Label.Title_Label}" controller="ImportDataFromCSVCtrl" lightningStyleSheets="true">
 
-<apex:sectionHeader title="Import Records From CSV" subtitle="Step 2 of 2"/>
+<apex:sectionHeader title="{!$Label.Title_Label}" subtitle="{!$Label.Step_2_of_2_Label}"/>
 <apex:form >
     <apex:pageMessages />
-    <apex:pageBlock title="Load Records">
-        <apex:pageBlockButtons location="bottom">
-            <apex:commandButton value="Back" action="{!step1}"/>
-            <apex:commandButton styleClass="slds-button slds-button_success" rendered="{!sObjectRecords.size > 0}" value="Insert Records" action="{!insertSObjectRecords}"/>
+    <apex:pageBlock title="{!$Label.Load_Records_Label}">
+        <apex:pageBlockButtons location="top">
+            <apex:commandButton value="{!$Label.Back}" action="{!step1}"/>
+            <apex:commandButton value="{!$Label.Download_CSV_Template_Button_Label}" action="{!downloadCSVTemplate}"/>
+            <apex:commandButton value="{!$Label.Clear_File_Label}" action="{!clearFile}"/>
+            <apex:commandButton rendered="{!sObjectRecords.size > 0}" value="{!$Label.Insert_Records_Button_Label}" action="{!insertSObjectRecords}"/>
         </apex:pageBlockButtons>
-        <apex:pageBlockSection title="Choose File To Load" columns="2">
+        <apex:pageBlockSection title="{!$Label.Choose_File_To_Load_Label}" columns="1">
             <apex:inputFile value="{!CSVFileBody}" accept="csv"/>
+            <apex:commandButton value="{!$Label.Load_Records_Label}" action="{!transformCSVFileBodyToRecords}"/>
         </apex:pageBlockSection>
-        <apex:pageBlockSection>
-            <apex:commandButton styleClass="slds-button slds-button_neutral" value="Download CSV Template" action="{!downloadCSVTemplate}"/>
-            <apex:commandButton styleClass="slds-button slds-button_brand" value="Read File" action="{!transformCSVFileBodyToRecords}"/>
-            <apex:commandButton styleClass="slds-button slds-button_destructive" value="Clear File" action="{!clearFile}"/>
-            <apex:outputText value="Number Of Records Read: {! sObjectRecords.size } out of maximum 1,000"/>
+        <apex:pageBlockSection title="{!$Label.Configurations_Label}">
+            <apex:inputCheckbox value="{!allowPartialSuccess}" label="{!$Label.Allow_Partial_Success_Label}"/>
         </apex:pageBlockSection>
-        <apex:pageBlockSection title="Make Any Necessary Edits Before Inserting Records">
+        <apex:pageBlockSection title="{!$Label.Records_Table_Title_Label}" columns="1" collapsible="false">
             <apex:pageBlockTable value="{!sObjectRecords}" var="sor">
                 <apex:inlineEditSupport event="onclick" />
                 <apex:repeat value="{!fieldSetSObjectFields}" var="field">
                     <apex:column headerValue="{!field.label}">
-                        <apex:outputField value="{!sor[field.developerName]}"/>
+                        <apex:outputField value="{!sor.record[field.developerName]}"/>
                     </apex:column>
                 </apex:repeat>
+                <apex:column>
+                    <apex:repeat value="{!sor.errorMessages}" var="message">
+                        <apex:outputText value="{!message}"/>
+                    </apex:repeat>
+                </apex:column>
             </apex:pageBlockTable>
         </apex:pageBlockSection>
     </apex:pageBlock>

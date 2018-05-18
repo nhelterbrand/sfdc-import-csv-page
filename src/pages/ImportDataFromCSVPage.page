@@ -1,20 +1,20 @@
-<apex:page title="Import Records From CSV" controller="ImportDataFromCSVCtrl" lightningStyleSheets="true">
+<apex:page title="{!$Label.Title_Label}" controller="ImportDataFromCSVCtrl" lightningStyleSheets="true">
 
-<apex:sectionHeader title="Import Records From CSV" subtitle="Step 1 of 2"/>
+<apex:sectionHeader title="{!$Label.Title_Label}" subtitle="{!$Label.Step_1_of_2_Label}"/>
 <apex:form >
     <apex:pageMessages />
-    <apex:pageBlock title="Select Object and Field Set">
-        <apex:pageBlockButtons location="bottom">
-            <apex:commandButton value="Next" action="{!step2}"/>
+    <apex:pageBlock title="{!$Label.Select_Object_and_Field_Set_Step_Label}">
+        <apex:pageBlockButtons location="top">
+            <apex:commandButton value="{!$Label.Next}" action="{!step2}"/>
         </apex:pageBlockButtons>
-        <apex:pageBlockSection title="Select Object">
+        <apex:pageBlockSection title="{!$Label.Select_Object_Label}">
             <apex:selectList value="{!selectedObject}" size="1">
                 <apex:selectOptions value="{!sObjectOptions}"/>
                 <apex:actionSupport event="onchange"
                     action="{!fetchFieldSetOptions}"/>
             </apex:selectList>
         </apex:pageBlockSection>
-        <apex:pageBlockSection title="Select Field Set on Object">
+        <apex:pageBlockSection title="{!$Label.Select_Field_Set_Label}">
             <apex:selectList value="{!selectedFieldSet}" size="1">
                 <apex:selectOptions value="{!fieldSetOptions}"/>
             </apex:selectList>
