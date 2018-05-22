@@ -13,6 +13,13 @@ public without sharing class ImportDataFromCSVCtrl {
         set;
     }
 
+    public String dateInputFormat {
+        get {
+            return (dateInputFormat == null) ? 'YYYY-MM-DD' : dateInputFormat;
+        }
+        set;
+    }
+
     public String selectedObject {
         get {
             return (selectedObject == null) ? SObjectType.Account.getName() : selectedObject;
@@ -59,6 +66,17 @@ public without sharing class ImportDataFromCSVCtrl {
             }
             
             return fieldSetOptions;
+        }
+        set;
+    }
+
+    public List<SelectOption> dateInputFormatOptions {
+        get {
+            dateInputFormatOptions = new List<SelectOption>();
+            dateInputFormatOptions.add(new SelectOption('System', 'System Format (ex. YYYY-MM-DD)'));
+            dateInputFormatOptions.add(new SelectOption('Local', 'Local Format (ex. MM/DD/YYYY)'));
+
+            return dateInputFormatOptions;
         }
         set;
     }
@@ -278,7 +296,7 @@ public without sharing class ImportDataFromCSVCtrl {
             if (type == 'Datetime') {
                 return Date.parse((String)value);
             } else if (type == 'Date') {
-                return Date.parse((String)value);
+                return parseDate((String)value);
             } else if (type == 'Integer') {
                 return Integer.valueOf((String)value);
             } else if (type == 'Double') {
@@ -291,6 +309,23 @@ public without sharing class ImportDataFromCSVCtrl {
         } else {
             return null;
         }
+    }
+
+    @TestVisible
+    private Date parseDate(String dateInput) {
+        Date parsedDate;
+
+        try {
+            if (dateInputFormat == 'Local') {
+                parsedDate = Date.parse(dateInput);
+            } else {
+                parsedDate = Date.valueOf(dateInput);
+            }
+        } catch (Exception e) {
+            System.debug(LoggingLevel.ERROR, 'Please format date in ' + dateInputFormat + ' format');
+        }
+
+        return parsedDate;
     }
 
     // initial credit from https://developer.salesforce.com/page/Code_Samples#Parse_a_CSV_with_APEX

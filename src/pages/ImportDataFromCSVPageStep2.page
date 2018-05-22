@@ -16,6 +16,9 @@
         </apex:pageBlockSection>
         <apex:pageBlockSection title="{!$Label.Configurations_Label}">
             <apex:inputCheckbox value="{!allowPartialSuccess}" label="{!$Label.Allow_Partial_Success_Label}"/>
+            <apex:selectList value="{!dateInputFormat}" size="1">
+                <apex:selectOptions value="{!dateInputFormatOptions}"/>
+            </apex:selectList>
         </apex:pageBlockSection>
         <apex:pageBlockSection title="{!$Label.Records_Table_Title_Label}" columns="1" collapsible="false">
             <apex:pageBlockTable value="{!sObjectRecords}" var="sor">
