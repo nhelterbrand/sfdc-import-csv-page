@@ -5,6 +5,7 @@
  */
 public without sharing class ImportDataFromCSVCtrl {
     public Blob CSVFileBody {get;set;}
+    public String recordIndexToRemove {get;set;}
 
     public Boolean allowPartialSuccess {
         get {
@@ -133,15 +134,7 @@ public without sharing class ImportDataFromCSVCtrl {
 
                 for (Integer i = 0; i < parsedCSV.size(); i++) {
                     SObject sr = Schema.getGlobalDescribe().get(selectedObject).newSObject();
-                    SObjectRecordWrapper srWrap = new SObjectRecordWrapper();
-
-                    for (Integer j = 0; j < fieldSetSObjectFields.size(); j++) {
-                        SObjectField field = fieldSetSObjectFields[j];
-                        sr.put(field.developerName, putValue(field.type, parsedCSV[i][j]));
-                    }
-
-                    srWrap.record = sr;  
-                    srWrap.errorMessages = new List<String>();
+                    SObjectRecordWrapper srWrap = createSObjectWrapper(fieldSetSObjectFields, parsedCSV[i]);
 
                     sObjectRecords.add(srWrap);
                 }
@@ -241,6 +234,24 @@ public without sharing class ImportDataFromCSVCtrl {
         CSVFileBody = null;
     }
 
+    public void addRecordToList() {
+        SObjectRecordWrapper srw = createSObjectWrapper(null, null);
+
+        if (sObjectRecords == null || sObjectRecords.size() == 0) {
+            sObjectRecords = new List<SObjectRecordWrapper>();
+            sObjectRecords.add(srw);
+        } else {
+            sObjectRecords.add(0, srw);
+        }
+    }
+
+    public void removeRecordFromList() {
+        if (recordIndexToRemove != null) {
+            Integer index = Integer.valueOf(recordIndexToRemove);
+            sObjectRecords.remove(index);
+        }
+    }
+
     // actions that redirect to another visualforce page
 
     public PageReference downloadCSVTemplate() {
@@ -322,10 +333,31 @@ public without sharing class ImportDataFromCSVCtrl {
                 parsedDate = Date.valueOf(dateInput);
             }
         } catch (Exception e) {
-            System.debug(LoggingLevel.ERROR, 'Please format date in ' + dateInputFormat + ' format');
+            displayMessage(ApexPages.Severity.ERROR, 'Please format date in ' + dateInputFormat + ' format. Load file again to see date fields populated once they are in the proper format.');
         }
 
         return parsedDate;
+    }
+
+    private SObjectRecordWrapper createSObjectWrapper(List<SObjectField> fieldSetSObjectFields, List<String> valueList) {
+        SObjectRecordWrapper srWrap = new SObjectRecordWrapper();
+        SObject sr;
+
+        if (fieldSetSObjectFields != null) {
+            sr = Schema.getGlobalDescribe().get(selectedObject).newSObject();
+
+            for (Integer j = 0; j < fieldSetSObjectFields.size(); j++) {
+                SObjectField field = fieldSetSObjectFields[j];
+                sr.put(field.developerName, putValue(field.type, valueList[j]));
+            }
+        } else {
+            sr = Schema.getGlobalDescribe().get(selectedObject).newSObject(null, true);
+        }
+
+        srWrap.record = sr;  
+        srWrap.errorMessages = new List<String>();
+
+        return srWrap;
     }
 
     // initial credit from https://developer.salesforce.com/page/Code_Samples#Parse_a_CSV_with_APEX
