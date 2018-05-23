@@ -11,7 +11,7 @@
                 <apex:commandButton rendered="{!sObjectRecords.size > 0}" value="{!$Label.Insert_Records_Button_Label}" action="{!insertSObjectRecords}"/>
             </apex:form>
         </apex:pageBlockButtons>
-        <apex:form>
+        <apex:form >
             <apex:pageBlockSection title="{!$Label.Choose_File_To_Load_Label}" columns="1">
                 <apex:inputFile value="{!CSVFileBody}" accept="csv"/>
                 <apex:commandButton value="{!$Label.Load_Records_Label}" action="{!transformCSVFileBodyToRecords}"/>
@@ -23,10 +23,10 @@
                 </apex:selectList>
             </apex:pageBlockSection>
         </apex:form>
-        <apex:form>
+        <apex:form >
             <apex:outputPanel id="sobjectRecordTable">
                 <apex:pageBlockSection title="{!$Label.Records_Table_Title_Label}" columns="1" collapsible="false">
-                    <apex:commandButton value="Add New Record" action="{!addRecordToList}"/>
+                    <apex:commandButton value="{!$Label.Add_Record_Button_Label}" action="{!addRecordToList}"/>
                     <apex:variable var="index" value="{!0}"/>
 
                     <!-- sobject table of records -->
@@ -45,8 +45,8 @@
                                 <apex:outputText style="color:red;" value="{!message}"/>
                             </apex:repeat>
                         </apex:column>
-                        <apex:column>
-                            <apex:commandButton value="Remove" action="{!removeRecordFromList}" rerender="sobjectRecordTable,buttonmenu">
+                        <apex:column >
+                            <apex:commandButton value="{!$Label.Remove_Button_Label}" action="{!removeRecordFromList}" rerender="sobjectRecordTable,buttonmenu">
                                 <apex:param name="removeIndex" value="{!index}" assignTo="{!recordIndexToRemove}"/>
                             </apex:commandButton>
                         </apex:column>

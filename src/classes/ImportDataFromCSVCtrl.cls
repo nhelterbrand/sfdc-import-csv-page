@@ -16,7 +16,7 @@ public without sharing class ImportDataFromCSVCtrl {
 
     public String dateInputFormat {
         get {
-            return (dateInputFormat == null) ? 'YYYY-MM-DD' : dateInputFormat;
+            return (dateInputFormat == null) ? 'MM/DD/YYYY' : dateInputFormat;
         }
         set;
     }
@@ -74,8 +74,8 @@ public without sharing class ImportDataFromCSVCtrl {
     public List<SelectOption> dateInputFormatOptions {
         get {
             dateInputFormatOptions = new List<SelectOption>();
-            dateInputFormatOptions.add(new SelectOption('System', 'System Format (ex. YYYY-MM-DD)'));
-            dateInputFormatOptions.add(new SelectOption('Local', 'Local Format (ex. MM/DD/YYYY)'));
+            dateInputFormatOptions.add(new SelectOption('Local', System.Label.Date_Local_Format_Option_Text));
+            dateInputFormatOptions.add(new SelectOption('System', System.Label.Date_System_Format_Option_Text));
 
             return dateInputFormatOptions;
         }
@@ -333,7 +333,13 @@ public without sharing class ImportDataFromCSVCtrl {
                 parsedDate = Date.valueOf(dateInput);
             }
         } catch (Exception e) {
-            displayMessage(ApexPages.Severity.ERROR, 'Please format date in ' + dateInputFormat + ' format. Load file again to see date fields populated once they are in the proper format.');
+            displayMessage(
+                ApexPages.Severity.ERROR, 
+                String.format(
+                    System.Label.Date_Wrong_Format_Message, 
+                    new List<String>{dateInputFormat}
+                )
+            );
         }
 
         return parsedDate;

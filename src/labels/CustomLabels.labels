@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>Add_Record_Button_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add Record Button Label</shortDescription>
+        <value>Add New Record</value>
+    </labels>
+    <labels>
         <fullName>All_Fields_Text</fullName>
         <categories>ImportFromCSV</categories>
         <language>en_US</language>
@@ -57,6 +65,30 @@
         <value>Configurations</value>
     </labels>
     <labels>
+        <fullName>Date_Local_Format_Option_Text</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Date Local Format Option Text</shortDescription>
+        <value>Local Format (ex. MM/DD/YYYY)</value>
+    </labels>
+    <labels>
+        <fullName>Date_System_Format_Option_Text</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Date System Format Option Text</shortDescription>
+        <value>System Format (ex. YYYY-MM-DD)</value>
+    </labels>
+    <labels>
+        <fullName>Date_Wrong_Format_Message</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Date Wrong Format Message</shortDescription>
+        <value>Please format date in {0} format. Load file again to see date fields populated once they are in the proper format.</value>
+    </labels>
+    <labels>
         <fullName>Download_CSV_Template_Button_Label</fullName>
         <categories>ImportFromCSV</categories>
         <language>en_US</language>
@@ -111,6 +143,14 @@
         <protected>true</protected>
         <shortDescription>Records Table Title Label</shortDescription>
         <value>Make Any Necessary Edits Before Inserting Records</value>
+    </labels>
+    <labels>
+        <fullName>Remove_Button_Label</fullName>
+        <categories>ImportFromCSV</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Remove Button Label</shortDescription>
+        <value>Remove</value>
     </labels>
     <labels>
         <fullName>Select_Field_Set_Label</fullName>
