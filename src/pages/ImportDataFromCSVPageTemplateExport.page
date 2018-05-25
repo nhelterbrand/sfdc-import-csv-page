@@ -1,3 +1,6 @@
 <apex:page contentType="text/csv#ImportCSVTemplate.csv" cache="true" controller="ImportDataFromCSVCtrl">
-<apex:repeat value="{!fieldSetSObjectFields}" var="field">{!field.developerName},</apex:repeat>
+    <apex:repeat value="{!fieldSetSObjectFields}" var="field">
+        <apex:outputText rendered="{!field.required == true}">{!field.developerName}*,</apex:outputText>
+        <apex:outputText rendered="{!field.required == false}">{!field.developerName},</apex:outputText>
+    </apex:repeat>
 </apex:page>

@@ -36,7 +36,11 @@
 
                         <!-- columns -->
                         <apex:repeat value="{!fieldSetSObjectFields}" var="field">
-                            <apex:column headerValue="{!field.label}">
+                            <!-- render different columns if field is required -->
+                            <apex:column headerValue="{!field.label}*" rendered="{!field.required == true}">
+                                <apex:outputField value="{!sor.record[field.developerName]}"/>
+                            </apex:column>
+                            <apex:column headerValue="{!field.label}" rendered="{!field.required == false}">
                                 <apex:outputField value="{!sor.record[field.developerName]}"/>
                             </apex:column>
                         </apex:repeat>

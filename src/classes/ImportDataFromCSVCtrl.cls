@@ -87,6 +87,7 @@ public without sharing class ImportDataFromCSVCtrl {
         public String type;
         public String label {get;set;}
         public String developerName {get;set;}
+        public Boolean required {get;set;}
     }
 
     // wrapper class to display records in table
@@ -280,6 +281,7 @@ public without sharing class ImportDataFromCSVCtrl {
                 sf.label = fsm.getLabel();
                 sf.type = fsm.getType().name();
                 sf.developerName = fsm.getFieldPath();
+                sf.required = fsm.getDBRequired() || fsm.getRequired();
 
                 fieldSetSObjectFields.add(sf);
             }
@@ -295,6 +297,7 @@ public without sharing class ImportDataFromCSVCtrl {
                     sf.label = dfr.getLabel();
                     sf.type = dfr.getType().name();
                     sf.developerName = dfr.getName();
+                    sf.required = dfr.isNillable();
 
                     fieldSetSObjectFields.add(sf);
                 }
