@@ -297,7 +297,7 @@ public without sharing class ImportDataFromCSVCtrl {
                     sf.label = dfr.getLabel();
                     sf.type = dfr.getType().name();
                     sf.developerName = dfr.getName();
-                    sf.required = dfr.isNillable();
+                    sf.required = !dfr.isNillable();
 
                     fieldSetSObjectFields.add(sf);
                 }
