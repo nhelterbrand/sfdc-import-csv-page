@@ -308,7 +308,7 @@ public without sharing class ImportDataFromCSVCtrl {
     private Object putValue(String type, Object value) {
         if (value != '') {
             if (type == 'Datetime') {
-                return Date.parse((String)value);
+                return parseDatetime((String)value);
             } else if (type == 'Date') {
                 return parseDate((String)value);
             } else if (type == 'Integer') {
@@ -346,6 +346,37 @@ public without sharing class ImportDataFromCSVCtrl {
         }
 
         return parsedDate;
+    }
+
+    @TestVisible
+    private Datetime parseDatetime(String datetimeInput) {
+        Datetime parsedDatetime;
+
+        try {
+            if (dateInputFormat == 'Local') {
+                parsedDatetime = Datetime.parse(datetimeInput);
+            } else {
+                if (datetimeInput.contains('Z')) {
+                    datetimeInput = datetimeInput.replace('Z', ' ');
+                }
+
+                if (datetimeInput.contains('T')) {
+                    datetimeInput = datetimeInput.replace('T', ' ');
+                }
+
+                parsedDatetime = Datetime.valueOf(datetimeInput);
+            }
+        } catch (Exception e) {
+            displayMessage(
+                ApexPages.Severity.ERROR, 
+                String.format(
+                    System.Label.Date_Wrong_Format_Message, 
+                    new List<String>{dateInputFormat}
+                )
+            );
+        }
+
+        return parsedDatetime;
     }
 
     private SObjectRecordWrapper createSObjectWrapper(List<SObjectField> fieldSetSObjectFields, List<String> valueList) {

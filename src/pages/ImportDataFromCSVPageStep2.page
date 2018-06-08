@@ -26,7 +26,6 @@
         <apex:form >
             <apex:outputPanel id="sobjectRecordTable">
                 <apex:pageBlockSection title="{!$Label.Records_Table_Title_Label}" columns="1" collapsible="false">
-                    <apex:commandButton value="{!$Label.Add_Record_Button_Label}" action="{!addRecordToList}"/>
                     <apex:variable var="index" value="{!0}"/>
 
                     <!-- sobject table of records -->
@@ -34,7 +33,15 @@
                         <apex:inlineEditSupport event="onclick" />
                         <apex:variable var="index" value="{!index + 1}"/>
 
-                        <!-- columns -->
+                         <!-- columns -->
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandButton value="{!$Label.Add_Record_Button_Label}" action="{!addRecordToList}"/>
+                            </apex:facet>
+                            <apex:commandButton value="{!$Label.Remove_Button_Label}" action="{!removeRecordFromList}" rerender="sobjectRecordTable,buttonmenu">
+                                <apex:param name="removeIndex" value="{!index}" assignTo="{!recordIndexToRemove}"/>
+                            </apex:commandButton>
+                        </apex:column>
                         <apex:repeat value="{!fieldSetSObjectFields}" var="field">
                             <!-- render different columns if field is required -->
                             <apex:column headerValue="{!field.label}*" rendered="{!field.required == true}">
@@ -44,15 +51,10 @@
                                 <apex:outputField value="{!sor.record[field.developerName]}"/>
                             </apex:column>
                         </apex:repeat>
-                        <apex:column >
+                        <apex:column rendered="{!!sor.errorMessages.empty}">
                             <apex:repeat value="{!sor.errorMessages}" var="message">
                                 <apex:outputText style="color:red;" value="{!message}"/>
                             </apex:repeat>
-                        </apex:column>
-                        <apex:column >
-                            <apex:commandButton value="{!$Label.Remove_Button_Label}" action="{!removeRecordFromList}" rerender="sobjectRecordTable,buttonmenu">
-                                <apex:param name="removeIndex" value="{!index}" assignTo="{!recordIndexToRemove}"/>
-                            </apex:commandButton>
                         </apex:column>
                     </apex:pageBlockTable>
                 </apex:pageBlockSection>
