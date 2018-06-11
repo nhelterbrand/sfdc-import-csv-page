@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>ImportDataFromCSVCtrl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ImportDataFromCSVCtrlTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>Permission Set to use the Import CSV Page</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Import CSV Page Permissions</label>
+    <pageAccesses>
+        <apexPage>ImportDataFromCSVPage</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ImportDataFromCSVPageStep2</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+    <pageAccesses>
+        <apexPage>ImportDataFromCSVPageTemplateExport</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
+</PermissionSet>
