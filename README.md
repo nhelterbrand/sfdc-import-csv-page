@@ -2,8 +2,7 @@
 
 Visualforce Page that allows ad-hoc record creation for create-able objects to the logged in users and also allows importing records from CSVs using fieldsets as the import mapping template
 
-[![Deploy](https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png)]
-(https://githubsfdeploy.herokuapp.com/?owner=nhelterbrand&repo=sfdc-import-csv-page)
+[![Deploy](https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png)](https://githubsfdeploy.herokuapp.com/?owner=nhelterbrand&repo=sfdc-import-csv-page)
 
 ## Setup
 
